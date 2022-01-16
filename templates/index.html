@@ -1,0 +1,47 @@
+<html>
+
+<head>
+    <title>Wordle Solver</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+    <link rel="stylesheet" href="assets/main.css">
+    <script type="application/javascript" src="assets/app.js"></script>
+</head>
+
+<body>
+    <main class="wrapper">
+        <section class="container">
+            <h1>Wordle Solver</h1>
+            <h3>Enter known information about the letters of the word.</h3>
+            <div class="row">
+                <div class="column">
+                    <label for="char">Character</label>
+                    <input type="text" id="char">
+                </div>
+                <div class="column">
+                    <label for="position">Position</label>
+                    <select id="position">
+                        <option value="-1">Unknown</option>
+                        <option value="0">1st</option>
+                        <option value="1">2nd</option>
+                        <option value="2">3rd</option>
+                        <option value="3">4th</option>
+                        <option value="4">5th</option>
+                    </select>
+                </div>
+                <div class="column" style="position: relative;">
+                    <button style="position: absolute;bottom: 0.4rem;" id="addChar">Add</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="column">.column</div>
+                <div class="column column-50 column-offset-25">.column column-50 column-offset-25</div>
+            </div>
+
+        </section>
+    </main>
+</body>
+
+</html>
