@@ -76,6 +76,7 @@ func (s *WordStore) Execute(q Query) []string {
 	for i, wordIdx := range idxs {
 		result[i] = s.words[wordIdx]
 	}
+
 	return rank(result)
 }
 
@@ -84,6 +85,16 @@ type posChar struct {
 	pos int
 }
 
+func atPoss(ch rune, poses ...int) []posChar {
+	result := []posChar{}
+	for _, pos := range poses {
+		result = append(result, posChar{
+			ch:  ch,
+			pos: pos,
+		})
+	}
+	return result
+}
 func atPos(ch rune, pos int) posChar {
 	return posChar{
 		ch:  ch,

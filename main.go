@@ -7,7 +7,7 @@ import (
 	"sort"
 )
 
-//go:embed words_alpha.txt
+//go:embed words_alpha.txt sgb-words.txt
 var worldList embed.FS
 
 func main() {
@@ -18,14 +18,15 @@ func main() {
 }
 
 func run() error {
-	store, err := loadWordStore("words_alpha.txt")
+	//store, err := loadWordStore("words_alpha.txt")
+	store, err := loadWordStore("sgb-words.txt")
 	if err != nil {
 		return err
 	}
 
 	query := &wordleQuery{
-		present:    append(anyPos("f"), atPos('a', 1), atPos('s', 4), atPos('c', 0)),
-		notPresent: append(anyPos("pntimbkyol")),
+		present:    merge(anyPos("alr"), atPoss('r', 4)),
+		notPresent: merge(anyPos("tbe"), atPoss('a', 1, 4, 2), atPoss('l', 3, 0, 1)),
 	}
 	result := store.Execute(query)
 
@@ -37,6 +38,15 @@ func run() error {
 	return nil
 }
 
+func merge(poses ...[]posChar) []posChar {
+	result := []posChar{}
+	for _, pcs := range poses {
+		for _, pc := range pcs {
+			result = append(result, pc)
+		}
+	}
+	return result
+}
 func printHist(word []string, ignore []posChar) {
 	type pair struct {
 		key   rune
