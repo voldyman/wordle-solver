@@ -24,8 +24,8 @@ func run() error {
 	}
 
 	query := &wordleQuery{
-		present:    append(anyPos("or"), atPos('n', 4), atPos('a', 3)),
-		notPresent: append(anyPos("eusgcvb"), atPos('o', 0), atPos('a', 0), atPos('a', 1), atPos('r', 1), atPos('r', 2), atPos('o', 2)),
+		present:    append(anyPos("f"), atPos('a', 1), atPos('s', 4), atPos('c', 0)),
+		notPresent: append(anyPos("pntimbkyol")),
 	}
 	result := store.Execute(query)
 

@@ -32,8 +32,10 @@ func loadWordStore(wordFilePath string) (*WordStore, error) {
 	return store, nil
 }
 
+var charsetSize = ord('z') - ord('A') + 1
+
 func acceptableWord(word string) bool {
-	lookup := make([]bool, ord('z')-ord('A')+1)
+	lookup := make([]bool, charsetSize)
 	for _, ch := range word {
 		if lookup[ord(ch)] {
 			return false
@@ -74,7 +76,7 @@ func (s *WordStore) Execute(q Query) []string {
 	for i, wordIdx := range idxs {
 		result[i] = s.words[wordIdx]
 	}
-	return result
+	return rank(result)
 }
 
 type posChar struct {
@@ -143,8 +145,46 @@ func retrieve(s *WordStore, start []int, target []posChar, combine combineFn) []
 	return start
 }
 
+func rank(words []string) []string {
+	// group words by char freq
+	// sort groups by char pos frequency
+	// since each word has a char only once, sorting by char pos frequency should do the both above simultaneously
+
+	freqs := [5][]int{}
+	updateFreq := func(word string, i int) {
+		if len(freqs[i]) == 0 {
+			freqs[i] = make([]int, charsetSize)
+		}
+		freqs[i][ord(rune(word[i]))] += 1
+	}
+
+	for _, word := range words {
+		for i := 0; i < 5; i++ {
+			updateFreq(word, i)
+		}
+	}
+	score := func(word string) int {
+		return freqs[0][bord(word[0])] +
+			freqs[1][bord(word[1])] +
+			freqs[2][bord(word[2])] +
+			freqs[3][bord(word[3])] +
+			freqs[4][bord(word[4])]
+	}
+	sort.Slice(words, func(i, j int) bool {
+		return score(words[i]) <= score(words[j])
+	})
+	return words
+}
+
+func bord(ch byte) int {
+	return int(ch - 'A')
+}
 func ord(ch rune) int {
 	return int(ch - 'A')
+}
+
+func unord(o int) rune {
+	return rune(o + 'A')
 }
 
 func intersect(a []int, b []int) []int {
